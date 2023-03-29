@@ -41,14 +41,15 @@ public class HistoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // get database object
-        db = DatabaseSingleton.getInstance(this.getContext());
+        DatabaseSingleton dbObject = DatabaseSingleton.getInstance(this.getContext());
+        db = dbObject.db;
 
         // switch screen back
         View buttonBack = binding.buttonBack;
         buttonBack.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_history_fragment_to_blankFragment, null));
 
         // get all operations
-        AppDao dao = db.appDao();
+        AppDao dao = (AppDao) db;
         List<AppEntity> allOperations = dao.getAllOperations();
 
 

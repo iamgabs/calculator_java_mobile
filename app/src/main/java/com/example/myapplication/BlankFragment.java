@@ -48,7 +48,7 @@ public class BlankFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding =  FragmentBlankBinding.inflate(inflater, container, false);
@@ -58,7 +58,8 @@ public class BlankFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        db = DatabaseSingleton.getInstance(this.getContext());
+        DatabaseSingleton dbObject = DatabaseSingleton.getInstance(this.getContext());
+        db = dbObject.db;
 
         // get TextView elements
         TextView smallTextView = binding.textViewSmall;
