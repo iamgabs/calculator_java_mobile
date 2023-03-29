@@ -300,6 +300,17 @@ z
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tableLayout"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/historyButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/roundedbuttonac"
+            android:text="@string/history"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

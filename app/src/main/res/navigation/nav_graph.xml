@@ -18,5 +18,19 @@
         android:id="@+id/blankFragment"
         android:name="com.example.myapplication.BlankFragment"
         android:label="fragment_blank"
-        tools:layout="@layout/fragment_blank" />
+        tools:layout="@layout/fragment_blank" >
+        <action
+            android:id="@+id/action_blankFragment_to_history_fragment"
+            app:destination="@id/history_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/history_fragment"
+        android:name="com.example.myapplication.HistoryFragment"
+        android:label="history_fragment"
+        tools:layout="@layout/history_fragment" >
+        <action
+            android:id="@+id/action_history_fragment_to_blankFragment"
+            app:destination="@id/blankFragment" />
+    </fragment>
 </navigation>

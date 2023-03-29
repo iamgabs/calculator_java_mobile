@@ -5,19 +5,29 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.room.Room;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.myapplication.database.AppDatabase;
+import com.example.myapplication.database.DatabaseSingleton;
 import com.example.myapplication.databinding.FragmentBlankBinding;
+import com.example.myapplication.models.AppDao;
+import com.example.myapplication.models.AppEntity;
+
+import org.w3c.dom.Entity;
 
 public class BlankFragment extends Fragment {
     FragmentBlankBinding binding;
+    AppDatabase db;
 
     public BlankFragment(){
         super(R.layout.fragment_blank);
+
     }
 
     public static boolean isNumeric(String s)
@@ -38,7 +48,7 @@ public class BlankFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding =  FragmentBlankBinding.inflate(inflater, container, false);
@@ -48,11 +58,13 @@ public class BlankFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        db = DatabaseSingleton.getInstance(this.getContext());
 
         // get TextView elements
         TextView smallTextView = binding.textViewSmall;
         TextView bigTextView = binding.bigTextView;
         final String[] operation = {""};
+        final int[] id = {0};
 
         // Get All button clicks and insert it into text view
 
@@ -278,14 +290,14 @@ public class BlankFragment extends Fragment {
                 double result = 0;
                 Double number1 = Double.valueOf((String) smallTextView.getText());
                 Double number2 = Double.valueOf(((String) bigTextView.getText()).substring(1, bigTextView.getText().length()));
-                if(operation[0] != "" && ((number1 != null) || (number2 != null))){
-                    if (operation[0] == "+") {
+                if(!operation[0].equals("") && ((number1 != null) || (number2 != null))){
+                    if (operation[0].equals("+")) {
                         result = number1 + number2;
-                    } else if (operation[0] == "-") {
+                    } else if (operation[0].equals("-")) {
                         result = number1 - number2;
-                    } else if (operation[0] == "*") {
+                    } else if (operation[0].equals("*")) {
                         result = number1 * number2;
-                    } else if (operation[0] == "/") {
+                    } else if (operation[0].equals("/")) {
                         if(number2 == 0.0) {
                             // clear operator
                             operation[0] = "";
@@ -296,9 +308,25 @@ public class BlankFragment extends Fragment {
                             return;
                         }
                         result = number1 / number2;
-                    } else if (operation[0] == "%") {
+                    } else if (operation[0].equals("%")) {
                         result = (number1/100) * number2;
                     }
+
+                    AppDao dao = db.appDao();
+                    AppEntity entity = new AppEntity();
+
+                    String op = String.valueOf(number1) + " " + operation[0] + " " +String.valueOf(number2);
+
+                    // create an entity object
+                    entity.operationID = id[0]+=1;
+                    entity.first_number = number1;
+                    entity.second_number = number2;
+                    entity.operator = operation[0];
+                    entity.operation = op;
+
+                    // save operation
+                    dao.newOperation(entity);
+
                     // clear numbers
                     number1 = null; number2 = null;
                     // clear operator
@@ -311,8 +339,15 @@ public class BlankFragment extends Fragment {
                     smallTextView.setText("");
                     bigTextView.setText("");
                 }
-
             }
         });
+
+
+
+
+
+        // go to history screen
+        View buttonHistory = binding.historyButton;
+        buttonHistory.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_blankFragment_to_history_fragment, null));
     }
 }
