@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class AppEntity {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int operationID;
 
     @ColumnInfo(name="first_number")
