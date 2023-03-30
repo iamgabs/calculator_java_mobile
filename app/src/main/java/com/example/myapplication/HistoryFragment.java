@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,30 +22,46 @@ import com.example.myapplication.database.AppDatabase;
 import com.example.myapplication.database.DatabaseSingleton;
 import com.example.myapplication.databinding.HistoryFragmentBinding;
 import com.example.myapplication.models.AppDao;
-import com.example.myapplication.models.AppDao_Impl;
 import com.example.myapplication.models.AppEntity;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class HistoryFragment extends Fragment {
 
     @NonNull HistoryFragmentBinding binding;
     AppDatabase db;
+    ConstraintLayout.LayoutParams serviceDescParams = new ConstraintLayout.LayoutParams(
+            ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
 
     public HistoryFragment() {
         super(R.layout.history_fragment);
     }
 
+    private LinearLayout createNewHorizontalLinearLayout() {
+        LinearLayout linearLayout = new LinearLayout(getContext());
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        linearLayout.setLayoutParams(serviceDescParams);
+        linearLayout.setLeft(0);
+        linearLayout.setMinimumHeight(35);
+        return linearLayout;
+    }
 
     private TextView setStyles(TextView textView) {
-        ConstraintLayout.LayoutParams serviceDescParams = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+
         textView.setTextSize(32);
         textView.setTextColor(Color.WHITE);
         textView.setWidth(View.MEASURED_SIZE_MASK);
         textView.setLayoutParams(serviceDescParams);
         textView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
         return textView;
+    }
+
+    private Button createGenericButton(int id, String text) {
+        Button button = new Button(getContext());
+        button.setId(id);
+        button.setText(text);
+        return button;
     }
 
     @Override
@@ -81,9 +98,34 @@ public class HistoryFragment extends Fragment {
            // set styles
            textView = setStyles(textView);
 
+           // create delete button
+           Button deleteButton = createGenericButton(id, "X");
+           // add action to delete operation
+           deleteButton.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                   // "Delete button" has the same id of it operation
+                   dao.deleteOperation(id);
+                   // TODO DELETE OPERATION OF LINEAR LAYOUT
+               }
+           });
+
            // ADD NEW TEXT VIEW INTO LINEAR LAYOUT
            LinearLayout layout = binding.layout;
-           layout.addView(textView);
+
+           // get new horizontal linear layout
+           LinearLayout horizontalLinearLayout = createNewHorizontalLinearLayout();
+
+           // add the "history text view to horizontal layout"
+           horizontalLinearLayout.addView(textView);
+
+           // add button to horizontal layout
+           horizontalLinearLayout.addView(deleteButton);
+
+           // add horizontal layout into main linear layout
+           layout.addView(horizontalLinearLayout);
+
+
        }
 
     }

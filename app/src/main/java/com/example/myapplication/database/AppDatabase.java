@@ -10,7 +10,7 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper;
 import com.example.myapplication.models.AppDao;
 import com.example.myapplication.models.AppEntity;
 
-@Database(entities = {AppEntity.class}, version = 2)
+@Database(entities = {AppEntity.class}, version = 4)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract AppDao appDao();
 }

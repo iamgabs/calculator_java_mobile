@@ -2,6 +2,7 @@ package com.example.myapplication.models;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
+import androidx.room.Entity;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -34,6 +35,9 @@ public interface AppDao {
 
     @Delete
     void clearHistory(AppEntity entity);
+
+    @Query("DELETE FROM appentity WHERE operationID == :id")
+    void deleteOperation(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void newOperation(AppEntity entity);
