@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -57,8 +58,8 @@ public class HistoryFragment extends Fragment {
         return textView;
     }
 
-    private Button createGenericButton(int id, String text) {
-        Button button = new Button(getContext());
+    private Button createGenericButton(Context context, int id, String text) {
+        Button button = new Button(context);
         button.setId(id);
         button.setText(text);
         return button;
@@ -91,15 +92,15 @@ public class HistoryFragment extends Fragment {
            int id = operation.operationID;
            // CREATE A NEW TEXT VIEW COMPONENT
            TextView textView = new TextView(getContext());
-           // set id
-           textView.setId(id);
+
            // set text (operation)
            textView.setText(operation.operation);
            // set styles
            textView = setStyles(textView);
 
            // create delete button
-           Button deleteButton = createGenericButton(id, "X");
+           Button deleteButton = createGenericButton(getContext(), id, "X");
+
            // add action to delete operation
            deleteButton.setOnClickListener(new View.OnClickListener() {
                @Override
@@ -117,7 +118,7 @@ public class HistoryFragment extends Fragment {
            LinearLayout horizontalLinearLayout = createNewHorizontalLinearLayout();
 
            // add the "history text view to horizontal layout"
-           horizontalLinearLayout.addView(textView);
+//           horizontalLinearLayout.addView(textView);
 
            // add button to horizontal layout
            horizontalLinearLayout.addView(deleteButton);
