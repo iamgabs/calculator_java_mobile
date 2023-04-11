@@ -3,7 +3,9 @@ package com.example.myapplication;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +47,8 @@ public class HistoryFragment extends Fragment {
         linearLayout.setLayoutParams(serviceDescParams);
         linearLayout.setLeft(0);
         linearLayout.setMinimumHeight(35);
+        linearLayout.setMinimumWidth(View.MEASURED_SIZE_MASK);
+        linearLayout.setGravity(Gravity.RIGHT);
         return linearLayout;
     }
 
@@ -52,7 +56,7 @@ public class HistoryFragment extends Fragment {
 
         textView.setTextSize(32);
         textView.setTextColor(Color.WHITE);
-        textView.setWidth(View.MEASURED_SIZE_MASK);
+        textView.setWidth(500);
         textView.setLayoutParams(serviceDescParams);
         textView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
         return textView;
@@ -61,7 +65,18 @@ public class HistoryFragment extends Fragment {
     private Button createGenericButton(Context context, int id, String text) {
         Button button = new Button(context);
         button.setId(id);
+        Drawable d = getResources().getDrawable(R.drawable.roundedbuttonac);
+        button.setBackground(d);
+        button.setWidth(30);
+        button.setHeight(30);
         button.setText(text);
+
+        // create button's layout params
+        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        ((LinearLayout.LayoutParams) params).setMargins(30, 0, 0, 0);
+
+        button.setLayoutParams(params);
+
         return button;
     }
 
@@ -101,15 +116,7 @@ public class HistoryFragment extends Fragment {
            // create delete button
            Button deleteButton = createGenericButton(getContext(), id, "X");
 
-           // add action to delete operation
-           deleteButton.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                   // "Delete button" has the same id of it operation
-                   dao.deleteOperation(id);
-                   // TODO DELETE OPERATION OF LINEAR LAYOUT
-               }
-           });
+
 
            // ADD NEW TEXT VIEW INTO LINEAR LAYOUT
            LinearLayout layout = binding.layout;
@@ -117,8 +124,8 @@ public class HistoryFragment extends Fragment {
            // get new horizontal linear layout
            LinearLayout horizontalLinearLayout = createNewHorizontalLinearLayout();
 
-           // add the "history text view to horizontal layout"
-//           horizontalLinearLayout.addView(textView);
+//            add the "history text view to horizontal layout"
+           horizontalLinearLayout.addView(textView);
 
            // add button to horizontal layout
            horizontalLinearLayout.addView(deleteButton);
@@ -126,6 +133,16 @@ public class HistoryFragment extends Fragment {
            // add horizontal layout into main linear layout
            layout.addView(horizontalLinearLayout);
 
+           // add action to delete operation
+           deleteButton.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                   // "Delete button" has the same id of it operation
+                   dao.deleteOperation(id);
+                   // delete from horizontal line
+                   layout.removeView(horizontalLinearLayout);
+               }
+           });
 
        }
 

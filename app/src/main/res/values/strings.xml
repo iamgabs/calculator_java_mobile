@@ -22,4 +22,5 @@
     <string name="history">h</string>
     <string name="history_title">Histórico</string>
     <string name="history_btn_voltar">Voltar</string>
+    <string name="ol_bem_vindo_a">Olá, bem vindo(a)!</string>
 </resources>

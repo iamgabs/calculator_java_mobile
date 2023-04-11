@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
+        android:background="@drawable/roundedbuttonequals"
         android:text="@string/history_btn_voltar"
         app:layout_constraintEnd_toStartOf="@+id/historyTitle"
         app:layout_constraintHorizontal_bias="0.75"
